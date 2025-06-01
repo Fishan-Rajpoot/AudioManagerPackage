@@ -178,7 +178,7 @@ Please ensure your code follows the existing style and includes appropriate docu
 
 ## 📜 License
 
-This package is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+This package is licensed under the **MIT License**.
 
 ---
 
