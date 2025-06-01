@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2675435423019981786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1351574593198601579}
+  - component: {fileID: 6266019922111597156}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1351574593198601579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675435423019981786}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.13144262, y: 5.3725758, z: 1.573653}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6266019922111597156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675435423019981786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3939ea89f7da1c446be7e2bd9849601d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioMixer: {fileID: 24100000, guid: 170b4ee0b71373d4489b81ba777d3954, type: 2}
+  sounds:
+  - source: {fileID: 0}
+    name: 0
+    clip: {fileID: 8300000, guid: 8769b120a1c9da840b1b43599349b8ce, type: 3}
+    mixer: {fileID: 24300002, guid: 170b4ee0b71373d4489b81ba777d3954, type: 2}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+  - source: {fileID: 0}
+    name: 1
+    clip: {fileID: 8300000, guid: 88c51ea78271b734ea8d433784686785, type: 3}
+    mixer: {fileID: -5984904726816023983, guid: 170b4ee0b71373d4489b81ba777d3954, type: 2}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
+  - source: {fileID: 0}
+    name: 2
+    clip: {fileID: 8300000, guid: 0566d1d390b36ef40af8de3990b56116, type: 3}
+    mixer: {fileID: -5222655729010477733, guid: 170b4ee0b71373d4489b81ba777d3954, type: 2}
+    volume: 1
+    pitch: 1
+    playOnAwake: 0
+    loop: 0
