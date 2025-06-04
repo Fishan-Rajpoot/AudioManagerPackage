@@ -2,8 +2,8 @@ namespace GameDevFishy.Audio
 {
     public enum SoundName
     {
-        Background,
-        Music,
-        Test
+        Background = 0,
+        Music = 1,
+        Test = 2
     }
 }

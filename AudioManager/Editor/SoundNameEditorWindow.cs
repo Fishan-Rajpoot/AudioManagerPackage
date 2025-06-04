@@ -11,7 +11,8 @@ namespace GameDevFishy.Audio
         private List<string> enumValues = new List<string>();
         private string newEnumValue = "";
         private Vector2 scrollPosition;
-        private const string FilePath = "Assets/AudioManager/SoundNames.cs"; // Adjust path as needed
+        private const string FilePath = "Assets/AudioManager/Scripts/SoundNames.cs";
+        private bool allEnumValid = false;
 
         [MenuItem("Window/SoundName Editor")]
         public static void ShowWindow()
@@ -29,51 +30,92 @@ namespace GameDevFishy.Audio
         {
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-            EditorGUILayout.LabelField("SoundName Enum Values", EditorStyles.boldLabel);
-            for (int i = 0; i < enumValues.Count; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                enumValues[i] = EditorGUILayout.TextField("Enum Value", enumValues[i]);
-                if (GUILayout.Button("Remove"))
-                {
-                    enumValues.RemoveAt(i);
-                    i--;
-                }
-                EditorGUILayout.EndHorizontal();
-            }
+            PrintEnumFields();
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Add New Enum Value", EditorStyles.boldLabel);
             newEnumValue = EditorGUILayout.TextField("New Value", newEnumValue);
-            if (GUILayout.Button("Add Value") && !string.IsNullOrEmpty(newEnumValue) && !enumValues.Contains(newEnumValue))
+            if (GUILayout.Button("Add Value") &&
+                !string.IsNullOrEmpty(newEnumValue) &&
+                !enumValues.Contains(newEnumValue))
             {
                 enumValues.Add(newEnumValue);
                 newEnumValue = "";
             }
 
             EditorGUILayout.Space();
-            if (GUILayout.Button("Save Changes"))
+            if (allEnumValid)
             {
-                SaveEnumToFile();
+                if (GUILayout.Button("Save Changes"))
+                {
+                    SaveEnumToFile();
+                }
+            }
+            else
+            {
+                // Show a warning if any enum name is invalid
+                EditorGUILayout.HelpBox(
+                    "One or more enum names are invalid.\n" +
+                    "• Must start with a letter or underscore.\n" +
+                    "• Can only contain letters, digits, or underscores.\n" +
+                    "Please fix the highlighted entries before saving.",
+                    MessageType.Warning
+                );
             }
 
             EditorGUILayout.EndScrollView();
         }
 
+        private void PrintEnumFields()
+        {
+            EditorGUILayout.LabelField("SoundName Enum Values", EditorStyles.boldLabel);
+            allEnumValid = true;
+
+            for (int i = 0; i < enumValues.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                // If this entry is not a valid C# identifier, highlight it red
+                if (!IsValidEnumName(enumValues[i]))
+                {
+                    GUI.backgroundColor = Color.red;
+                    allEnumValid = false;
+                }
+
+                enumValues[i] = EditorGUILayout.TextField("Enum Value", enumValues[i]);
+                if (GUILayout.Button("Remove", GUILayout.Width(60)))
+                {
+                    enumValues.RemoveAt(i);
+                    i--; // step back one index because we removed the current entry
+                }
+
+                GUI.backgroundColor = Color.white;
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
         private void SaveEnumToFile()
         {
-            // Validate enum names
-            foreach (string value in enumValues)
+            // Generate enum entries with explicit indices, e.g. "Test = 0,"
+            var lines = new List<string>();
+            for (int i = 0; i < enumValues.Count; i++)
             {
-                if (!IsValidEnumName(value))
-                {
-                    EditorUtility.DisplayDialog("Error", $"Invalid enum name: {value}. Enum names must be valid C# identifiers.", "OK");
-                    return;
-                }
+                // You can leave a trailing comma on the last entry; C# allows it.
+                lines.Add($"{enumValues[i]} = {i}");
             }
 
-            // Generate enum code
-            string enumCode = "namespace GameDevFishy.Audio\n{\n    public enum SoundName\n    {\n        " + string.Join(",\n        ", enumValues) + "\n    }\n}";
+            string enumBody = string.Join($",{System.Environment.NewLine}        ", lines);
+
+            // Wrap in namespace + enum declaration
+            string enumCode =
+                "namespace GameDevFishy.Audio\n" +
+                "{\n" +
+                "    public enum SoundName\n" +
+                "    {\n" +
+                $"        {enumBody}\n" +
+                "    }\n" +
+                "}";
+
             File.WriteAllText(FilePath, enumCode);
             AssetDatabase.Refresh();
 
